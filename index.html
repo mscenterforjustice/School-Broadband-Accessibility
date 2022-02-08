@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset='utf-8' />
+    <title>Mississippi Center for Justice - Broadband accessibility</title>
+    <meta name='viewport' content='width=device-width, initial-scale=1'>
+    <link href='https://api.mapbox.com/mapbox-assembly/v0.24.0/assembly.min.css' rel='stylesheet'>
+    <script src='https://api.mapbox.com/mapbox-assembly/v0.24.0/assembly.js'></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.0/jquery.min.js"></script>
+    <script src="https://api.mapbox.com/mapbox-gl-js/v1.11.0/mapbox-gl.js"></script>
+    <link href="https://api.mapbox.com/mapbox-gl-js/v1.11.0/mapbox-gl.css" rel="stylesheet" />
+    <script async defer src="https://api.mapbox.com/mapbox-assembly/v0.24.0/assembly.js"></script>
+    <link rel='stylesheet' href="style.css" />
+  </head>
+
+<body>
+  <div class='flex-parent viewport-full relative scroll-auto'>
+    <div class='flex-child w360-ml absolute static-ml left bottom scroll-auto'>
+        <div class='flex-parent flex-parent viewport-third bg-white'>
+            <div class='flex-child flex-child--grow'>
+                <div id="sidebarA"
+                    class="flex-parent flex-parent--column-ml theme">
+                    <p><b>Which school districts have the most students at risk for exclusion from distance learning?</b><br>
+                      <br>This map visualizes data on free and reduced lunch enrollment (as an indicator of household poverty) and data on the availability of internet providers (minimum speed of 25/3 Mbps).<br>
+                      <br>Click on a district for details on enrollment, lunch program participation, and the average (median) number of internet providers within the district.
+                      <br><img src = "MS-map-legend.png" width=380px />
+                      <br>The school lunch data was divided this way because the majority of districts have high enrollment - only one district has lunch enrollment less than 40%. Note: This analysis does not include data from private schools.<br>
+                      <br><b>Zoom in to see details on internet provider availability at the census block level.</b> Explore this data in more detail at the <a href="https://broadbandmap.fcc.gov/#/"target="_blank">FCC Broadband map.</a>
+                      <br><img src = "FCClegend_300.png" width=340px />
+                      <br><b>Sources:</b><br>School District data - <a href="https://projects.propublica.org/miseducation/district/2802970"target="_blank">ProPublica</a>.<br>Internet providers - <a href="https://broadbandmap.fcc.gov/#/"target="_blank">FCC</a>.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class='flex-child flex-child--grow w-auto viewport-full-ml viewport-twothirds' id='map'>
+
+    </div>
+
+</div>
+
+
+    <script>
+      // define access token
+      mapboxgl.accessToken = 'pk.eyJ1IjoibWFyZW5hYiIsImEiOiJjam42cXNpNjIwMmxlM3lwYmxuZXAwdzh3In0.gPwDgUG31QDzSFg2Gohmtw';
+
+      //create map
+      var map = new mapboxgl.Map({
+        container: 'map', // container id
+        style: 'mapbox://styles/marenab/ckdgscbe402al1imcc49vm9i3' // map style URL from Mapbox Studio
+      });
+
+      // wait for map to load before adjusting it
+      map.on('load', function() {
+        // make a pointer cursor
+        map.getCanvas().style.cursor = 'default';
+
+        // set map bounds to the continental US
+        map.fitBounds([
+          [-92.08740234375, 35.34425514918409],
+          [-87.374267578125, 29.23847708592805]
+        ]);
+
+        // make a pointer cursor
+        map.getCanvas().style.cursor = 'default';
+    });
+
+        // Add pop-ups for polygon layer from style
+
+        map.on('load', function() {
+        // Add a source for the polygons.
+        map.addSource('districts', {
+        'type': 'vector',
+        'url': 'mapbox://marenab.5jdlfjkx'
+        });
+        
+        // Add a layer.
+        map.addLayer({
+        'id': 'details',
+        'type': 'fill',
+        'source': 'districts',
+        'source-layer':'MS-bivar-9g2fny',
+        'paint': {
+        'fill-color': "#fec016",
+        'fill-opacity': 0,
+        'fill-outline-color': "#fec016"
+        }
+        });
+        
+        // When a click event occurs on a feature in the layer, open a popup at the
+        // location of the click, with description HTML from its properties.
+        map.on('click', 'details', function(e) {
+        new mapboxgl.Popup()
+        .setLngLat(e.lngLat)
+        .setHTML('<h3>' + e.features[0].properties.NAME + '</h3><p>Median number of internet providers (25/3 Mbps minimum): ' + e.features[0].properties.Count_providers_253min_median + '</p><p> Percent of students enrolled in lunch program: ' + e.features[0].properties.prcnt_enrolled_lunch + '</p><p>Enrollment: ' + e.features[0].properties.Enrollment + '</p>')
+        .addTo(map);
+        });
+        
+        // Change the cursor to a pointer when the mouse is over the states layer.
+        map.on('mouseenter', 'details', function() {
+        map.getCanvas().style.cursor = 'pointer';
+        });
+        
+        // Change it back to a pointer when it leaves.
+        map.on('mouseleave', 'details', function() {
+        map.getCanvas().style.cursor = '';
+        });
+        });
+
+        // Add zoom and rotation controls to the map.
+        map.addControl(new mapboxgl.NavigationControl());
+  </script>
+  </body>
+</html>
