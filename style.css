@@ -1,0 +1,96 @@
+#sidebarA{
+    color:black;
+    overflow: auto
+}
+
+.theme{
+    background-color:white;
+}
+
+.select{
+    font-style: italic;
+    opacity: .7;
+}
+
+::-webkit-scrollbar {
+    width: 4px;
+    height: 3px;
+    border-left: 0;
+    background: rgba(0, 0, 0, 0.1);
+}
+
+::-webkit-scrollbar-track {
+    background: grey;
+}
+
+::-webkit-scrollbar-thumb {
+    border-radius: 0;
+    background: #2A395F;
+}
+
+
+body { margin:0; padding:0; }
+
+h2,
+h3 {
+  margin: 10px;
+  font-size: 1.2em;
+}
+
+p {
+  font-size: 0.85em;
+  margin: 10px;
+  text-align: left;
+}
+
+ .mapboxgl-popup {
+      padding-bottom: 5px;
+    }
+
+        .mapboxgl-popup-content {
+        font: 400 15px/22px 'Source Sans Pro', 'Helvetica Neue', Sans-serif;
+        padding: 0;
+        width: 300px;
+              max-height: 250px;
+              overflow: auto;
+      }
+
+        .mapboxgl-popup-content-wrapper {
+          padding: 1%;
+        }
+
+        .mapboxgl-popup-content h3 {
+        background: #404040;
+        color: #fff;
+        margin: 0;
+        display: block;
+        padding: 10px;
+        border-radius: 3px 3px 0 0;
+        font-weight: 600;
+        margin-top: 0px;
+      }
+
+    .mapboxgl-popup-content h4 {
+        margin: 0;
+        display: block;
+        padding: 5px;
+        font-size: 12px;
+        font-weight: bold;
+      }
+
+    .mapboxgl-container {
+      cursor: pointer;
+    }
+
+    .mapboxgl-popup-content div {
+        padding: 10px;
+      }
+
+    .mapboxgl-popup-anchor-top > .mapboxgl-popup-content {
+      margin-top: 3px;
+    }
+
+    .mapboxgl-popup-anchor-top > .mapboxgl-popup-tip {
+      border-bottom-color: #47d61b;
+    }
+  
